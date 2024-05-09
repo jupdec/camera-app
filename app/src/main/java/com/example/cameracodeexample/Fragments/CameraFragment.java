@@ -1,6 +1,7 @@
 package com.example.cameracodeexample.Fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -19,6 +20,10 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.cameracodeexample.MainActivity;
@@ -29,19 +34,37 @@ import java.io.ByteArrayOutputStream;
 public class CameraFragment extends Fragment {
     private static final int CAMERA_REQUEST = 1888;
     TextView text,text1;
+
+    ImageView imageView;
+
+    Button blinkBTN;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     //Bitmap photo;
     String photo;
     DataBaseHandler databaseHandler;
     private SQLiteDatabase db;
     Bitmap theImage;
+    @SuppressLint("MissingInflatedId")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        View view = inflater.inflate(R.layout.camera_fragment,container,false);
 
 
-       // imageView =view. findViewById(R.id.imageView1);
+        imageView = view.findViewById(R.id.imageview);
+
+        blinkBTN = view.findViewById(R.id.BTNblink);
+        blinkBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // To add blink animation
+                Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.blink_animation);
+                imageView.startAnimation(animation);
+            }
+        });
+
+
+
         text = view.findViewById(R.id.text);
         text1 = view.findViewById(R.id.text1);
         databaseHandler = new DataBaseHandler(getContext());
